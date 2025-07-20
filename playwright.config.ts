@@ -8,7 +8,6 @@ if (!process.env.NODE_ENV) {
   });
 }
 export default defineConfig({
-  testDir: './src/tests',
   retries: 1,
   reporter: [
     ['allure-playwright'],
@@ -23,7 +22,17 @@ export default defineConfig({
 
    projects: [
     {
+      name: 'sanity',
+      testDir: './src/tests/sanity',
+      use: {
+        ...devices['Desktop Chrome'],
+      }
+    },
+    {
       name: 'regression',
+      dependencies: ['sanity'],
+      fullyParallel: true,
+      testDir: './src/tests/regression',
       use: {
         ...devices['Desktop Chrome'],
       }

@@ -1,6 +1,6 @@
-import {expect, test } from './base';
+import {expect, test as sanity} from '../base';
 
-test('Purchase Product Test', async ({ productPage, cartPage }) => {
+sanity('Sanity Test', async ({ productPage, cartPage }) => {
 
     const isLogoVisible = await productPage.isAppLogoVisible();
     expect(isLogoVisible).toBeTruthy();

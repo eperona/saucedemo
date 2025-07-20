@@ -1,4 +1,4 @@
-import { test } from './base';
+import { test } from '../base';
 
 test.describe('Login Tests', () => {
 

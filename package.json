@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test --project=sanity --project=regression",
+    "test:allure": "npx playwright test --reporter=allure-playwright",
+    "test:allure:report:ci": "npx allure generate --clean && npx allure open --port 8080",
+    "runAllSanityTests": "npx playwright test --project=sanity",
+    "runAllRegressionTests": "npx playwright test --project=sanity --project=regression"
+  },
   "keywords": [],
   "author": "Edwin Perona",
   "license": "ISC",

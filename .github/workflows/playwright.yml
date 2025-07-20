@@ -18,8 +18,20 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
+      run: npm run runallRegressionTests
+    - name: Run Allure Report Generation
+      run: |
+        npx playwright test --reporter=allure-playwright
+        npx allure generate --clean
+        npx allure open --port 8080 && sleep 10
+    - name: Upload Playwright Report
+      if: ${{ always() }}
+      run: |
+        mkdir -p playwright-report
+        cp -r allure-report/* playwright-report/
+        cp -r allure-results/* playwright-report/
+    - name: Upload Playwright Report Artifact
+      uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
