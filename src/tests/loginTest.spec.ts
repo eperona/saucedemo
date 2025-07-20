@@ -1,79 +1,63 @@
-import test from '@playwright/test';
-import LoginPage from '../pages/LoginPage';
-import HomePage from '../pages/HomePage';
+import { test } from './base';
 
 test.describe('Login Tests', () => {
-  let loginPage: LoginPage;
-  let homePage: HomePage;
 
-  test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    homePage = new HomePage(page);
+  test.beforeEach(async ({ loginPage }) => {
     await loginPage.goto();
   });
 
-  test('should log in with valid credentials', async () => {
-    await loginPage.fillUsername('standard_user');
-    await loginPage.fillPassword('secret_sauce');
+  test('should log in with valid credentials', async ({ loginPage, homePage }) => {
+    await loginPage.fillUsername("standard_user");
+    await loginPage.fillPassword("secret_sauce");
     await loginPage.submit();
 
-    // Verify that the home page is displayed
     const isLogoVisible = await homePage.isAppLogoVisible();
     test.expect(isLogoVisible).toBeTruthy();
   });
 
-  test('should not log in with invalid credentials', async () => {
+  test('should not log in with invalid credentials', async ({ loginPage }) => {
     await loginPage.fillUsername('invalid_user');
     await loginPage.fillPassword('invalid_password');
     await loginPage.submit();
 
-    // Verify that the error message is displayed
     const errorMessage = await loginPage.getErrorMessage();
     test.expect(errorMessage).toContain('Epic sadface: Username and password do not match any user in this service');
   });
-    test('should display error message for empty credentials', async () => {
-        await loginPage.fillUsername('');
-        await loginPage.fillPassword('');
-        await loginPage.submit();
 
-        // Verify that the error message is displayed
-        const errorMessage = await loginPage.getErrorMessage();
-        test.expect(errorMessage).toContain('Epic sadface: Username is required');
-    }); 
+  test('should display error message for empty credentials', async ({ loginPage }) => {
+      await loginPage.fillUsername('');
+      await loginPage.fillPassword('');
+      await loginPage.submit();
 
-    test('should display error message for locked out user', async () => {
-        await loginPage.fillUsername('locked_out_user');
-        await loginPage.fillPassword('secret_sauce');
-        await loginPage.submit();
+      const errorMessage = await loginPage.getErrorMessage();
+      test.expect(errorMessage).toContain('Epic sadface: Username is required');
+  }); 
 
-        // Verify that the error message is displayed
-        const errorMessage = await loginPage.getErrorMessage();
-        test.expect(errorMessage).toContain('Epic sadface: Sorry, this user has been locked out.');
-    });
+  test('should display error message for locked out user', async ({ loginPage }) => {
+      await loginPage.fillUsername('locked_out_user');
+      await loginPage.fillPassword('secret_sauce');
+      await loginPage.submit();
 
-    test('should display error message for missing password', async () => {
-        await loginPage.fillUsername('standard_user');
-        await loginPage.fillPassword('');
-        await loginPage.submit();
+      const errorMessage = await loginPage.getErrorMessage();
+      test.expect(errorMessage).toContain('Epic sadface: Sorry, this user has been locked out.');
+  });
 
-        // Verify that the error message is displayed
-        const errorMessage = await loginPage.getErrorMessage();
-        test.expect(errorMessage).toContain('Epic sadface: Password is required');
-    });
+  test('should display error message for missing password', async ({ loginPage }) => {
+      await loginPage.fillUsername('standard_user');
+      await loginPage.fillPassword('');
+      await loginPage.submit();
 
-    test('should display error message for missing username', async () => {
-        await loginPage.fillUsername('');
-        await loginPage.fillPassword('secret_sauce');
-        await loginPage.submit();
+      const errorMessage = await loginPage.getErrorMessage();
+      test.expect(errorMessage).toContain('Epic sadface: Password is required');
+  });
 
-        // Verify that the error message is displayed
-        const errorMessage = await loginPage.getErrorMessage();
-        test.expect(errorMessage).toContain('Epic sadface: Username is required');
-        });
+  test('should display error message for missing username', async ({ loginPage }) => {
+      await loginPage.fillUsername('');
+      await loginPage.fillPassword('secret_sauce');
+      await loginPage.submit();
 
-    test.afterEach(async ({ page }) => {
-        // Optionally, you can add cleanup code here if needed
-        await page.close();     
-    });
-    
+      const errorMessage = await loginPage.getErrorMessage();
+      test.expect(errorMessage).toContain('Epic sadface: Username is required');
+      });
+
 });

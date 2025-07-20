@@ -1,6 +1,6 @@
 import {Page} from '@playwright/test';
 
-export default class LoginPage {
+export class LoginPage {
     private readonly usernameInputSelector = "#user-name";
     private readonly passwordInputSelector = "#password";
     private readonly submitButtonSelector = "#login-button";
@@ -8,7 +8,7 @@ export default class LoginPage {
   constructor(private page: Page) {}
 
   async goto() {
-    await this.page.goto('/');
+     await this.page.goto(process.env.URL!);
   }
 
   async fillUsername(username: string) {
@@ -31,6 +31,12 @@ export default class LoginPage {
   async getErrorMessage(): Promise<string> {
     const errorMessage = await this.page.textContent('[data-test="error"]');
     return errorMessage ?? "";
+  }
+
+  async login(username: string, password: string) {
+    await this.fillUsername(username);
+    await this.fillPassword(password);
+    await this.submit();
   }
 }
 
