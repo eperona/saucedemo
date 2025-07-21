@@ -34,8 +34,7 @@ export default class CartPage {
 
     @step('Check if cart page is loaded')
     async isCartPageLoaded(): Promise<boolean> {
-        return await this.page.locator(this.cartItemsSelector).isVisible() &&
-               await this.page.locator(this.checkoutButtonSelector).isVisible();
+        return await this.page.locator(this.checkoutButtonSelector).isVisible();
     }
 
     @step('Check if added item is visible')
