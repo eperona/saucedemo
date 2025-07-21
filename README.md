@@ -25,7 +25,12 @@
     ```
     Allure report installation. 
     
-    -https://allurereport.org/docs/install-for-nodejs/
+      -https://allurereport.org/docs/install-for-nodejs/
+
+    Faker installation (Test data generation)
+    ```
+    npm i @faker-js/faker
+    ```
 
 3. **Configure Environment**
     - Create a `.env` file under ./src/config folder.
@@ -36,10 +41,13 @@
       USER=...
       PASSWORD=...
       ```
-    Before running the test, set environment the value for NODE_ENV or create an npm custom script for it
-    ```
-    set NODE_ENV=qa
-    ```
+      Before running the test, set environment the value for NODE_ENV or create an npm custom script for it
+      ```
+      set NODE_ENV=qa
+      ```
+      NOTE: These env files should be added in gitignore or should be changed in the future to use Vault api or similar.
+
+
   ## Running Tests Locally
 
   - Run all tests:
@@ -49,6 +57,10 @@
   - Run specific test group:
     ```bash
     npx playwright test -g "test-group"
+    ```
+    Run specific test with UI:
+    ```bash
+    npx playwright test <Testname.spec.ts> --headed 
     ```
   ## Maintenance
 
@@ -61,19 +73,20 @@
 
   ## Artifacts & Reports
     
-    ## Opening the HTML Report
-  ```
-  npx playwright show-report
-  ```
+  ## Opening the HTML Report
+     
+      ```
+      npx playwright show-report
+      ```
 
   ## Opening the Allure HTML Report
   Generate Allure Report after the tests are executed:
   ```
-  allure generate ./allure-results -o ./allure-report
+  npx allure generate ./allure-results --clean
   ```
   Open the generated report:
   ```
-  allure open ./allure-report
+  npx allure open ./allure-report
   ```
 
   ## Continuous Integration (Jenkins) - ToDo

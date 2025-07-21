@@ -3,13 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "npx playwright test --project=sanity --project=regression",
-    "test:allure": "npx playwright test --reporter=allure-playwright",
-    "test:allure:report:ci": "npx allure generate --clean && npx allure open --port 8080",
-    "runAllSanityTests": "npx playwright test --project=sanity",
-    "runAllRegressionTests": "npx playwright test --project=regression"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "Edwin Perona",
   "license": "ISC",
@@ -20,6 +14,7 @@
     "allure-commandline": "^2.34.1"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.9.0",
     "allure-playwright": "^2.0.0",
     "dotenv": "^17.2.0"
   }
