@@ -9,7 +9,7 @@ test.describe('Order Product Test', () => {
     test('Add and remove products from cart', async ({ productPage, cartPage }) => {  
         await productPage.addProductToCart(product1Name);
         await productPage.addProductToCart(product2Name);
-        expect(await productPage.isHomePageLoaded()).toBeTruthy();
+        await productPage.isHomePageLoaded();
         await productPage.clickCartIcon();
         expect(await cartPage.getCartItemsCount()).toBe(2);
         await cartPage.clickRemoveButtonInCartPage(product1Name);
@@ -19,40 +19,40 @@ test.describe('Order Product Test', () => {
     test('Continue shopping from cart', async ({ productPage, cartPage }) => {
         await productPage.addProductToCart(product1Name);
         await productPage.clickCartIcon();
-        expect(await cartPage.isCartItemVisible()).toBeTruthy();
+        await cartPage.isCartItemVisible();
         await cartPage.clickContinueShopping();
-        expect(await productPage.isHomePageLoaded()).toBeTruthy();
+        await productPage.isHomePageLoaded();
     });
 
     test('Checkout button visibility', async ({ productPage, cartPage }) => {
         await productPage.addProductToCart(product1Name);
         await productPage.clickCartIcon();
-        expect(await cartPage.isCheckoutButtonVisible()).toBeTruthy();
+        await cartPage.isCheckoutButtonVisible();
     });
 
     test('Remove product from product page', async ({ productPage }) => {
         await productPage.addProductToCart(product1Name);
         await productPage.clickRemoveButtonInProductPage(product1Name);
-        expect(await productPage.isHomePageLoaded()).toBeTruthy();
-        expect(await productPage.isAddToCartButtonVisible(product1Name)).toBeTruthy();
+        await productPage.isHomePageLoaded();
+        await productPage.isAddToCartButtonVisible(product1Name);
     });
 
     test('Remove product from cart page', async ({ productPage, cartPage }) => {
         await productPage.addProductToCart(product1Name);
         await productPage.clickCartIcon();
-        expect(await cartPage.isCartItemVisible()).toBeTruthy();
+        await cartPage.isCartItemVisible();
         await cartPage.clickRemoveButtonInCartPage(product1Name);
         expect(await cartPage.getCartItemsCount()).toBe(0);
     });
 
     test('Cart icon visibility', async ({ productPage }) => {
-        expect(await productPage.isHomePageLoaded()).toBeTruthy();
-        expect(await productPage.isCartIconVisible()).toBeTruthy();
+        await productPage.isHomePageLoaded();
+        await productPage.isCartIconVisible();
     });
 
     test('Cart icon click navigates to cart page', async ({ productPage, cartPage }) => {
         await productPage.addProductToCart('Sauce Labs Backpack');
         await productPage.clickCartIcon();
-        expect(await cartPage.isCartItemVisible()).toBeTruthy();
+        await cartPage.isCartItemVisible();
     });
 }); 

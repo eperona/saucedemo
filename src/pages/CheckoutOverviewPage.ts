@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { step } from '../tests/base';
+import { expect, step } from '../tests/base';
 
 export default class CheckoutOverviewPage {
 
@@ -13,7 +13,7 @@ export default class CheckoutOverviewPage {
 
     @step('Checkout Overview Page is opened')
     async isOpened() {
-        return this.page.url().includes('/checkout-step-two');
+        await expect(this.page.locator(this.finishButtonSelector)).toBeVisible();
     }
 
     @step('Click on Cancel button')

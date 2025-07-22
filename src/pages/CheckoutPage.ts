@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { step } from '../tests/base';
+import { expect, step } from '../tests/base';
 
 export default class CheckoutPage {
     private readonly firstNameLocator = '#first-name';
@@ -37,7 +37,7 @@ export default class CheckoutPage {
 
     @step('Checkout Page is Opened')
     async isOpened() {
-        await this.page.waitForSelector(this.firstNameLocator);
-        return this.page.isVisible(this.firstNameLocator);
+        await expect(this.page.locator(this.firstNameLocator)).toBeVisible();
+        await expect(this.page.locator(this.continueButtonLocator)).toBeVisible();
     }
 }

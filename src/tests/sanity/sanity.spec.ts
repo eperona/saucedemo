@@ -2,11 +2,11 @@ import {expect, test as sanity} from '../base';
 
 sanity('Sanity Test', async ({ productPage, cartPage }) => {
 
-    expect(await productPage.isHomePageLoaded()).toBeTruthy();
+    await productPage.isHomePageLoaded();
     await productPage.addProductToCart('Sauce Labs Backpack');
     await productPage.addProductToCart('Sauce Labs Bike Light');
     await productPage.clickCartIcon();
-    expect(await cartPage.isCartPageLoaded()).toBeTruthy();
+    await cartPage.isCartPageLoaded();
     expect(await cartPage.getCartItemsCount()).toBe(2);
 
 });

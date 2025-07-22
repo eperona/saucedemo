@@ -10,8 +10,7 @@ test.describe('Login Tests', () => {
     await loginPage.fillUsername("standard_user");
     await loginPage.fillPassword(process.env.PASSWORD!);
     await loginPage.submit();
-    const isHeaderVisible = await homePage.isHomePageLoaded();
-    expect(isHeaderVisible).toBeTruthy();
+    await homePage.isHomePageLoaded();
   });
 
   test('should not log in with invalid credentials', async ({ loginPage }) => {

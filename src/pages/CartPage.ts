@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { step } from '../tests/base';
+import { expect, step } from '../tests/base';
 
 
 export default class CartPage {
@@ -17,7 +17,7 @@ export default class CartPage {
 
     @step('Click continue shopping button')
     async clickContinueShopping() {
-        await this.page.locator(this.continueShoppingButtonSelector).isVisible();
+        await expect(this.page.locator(this.continueShoppingButtonSelector)).toBeVisible();
         await this.page.locator(this.continueShoppingButtonSelector).click();
     }
 
@@ -31,20 +31,20 @@ export default class CartPage {
     async clickCheckoutButton() {
         await this.page.locator(this.checkoutButtonSelector).click();
     }
-
+    
     @step('Check if cart page is loaded')
-    async isCartPageLoaded(): Promise<boolean> {
-        return await this.page.locator(this.checkoutButtonSelector).isVisible();
+    async isCartPageLoaded() {
+         await expect(this.page.locator(this.checkoutButtonSelector)).toBeVisible();
     }
 
     @step('Check if added item is visible')
     async isCartItemVisible() {
-        return await this.page.locator(this.cartItemsSelector).isVisible();
+        await expect(this.page.locator(this.cartItemsSelector)).toBeVisible();
     }
 
     @step('Check if checkout button is visible')
     async isCheckoutButtonVisible() {
-        return await this.page.locator(this.checkoutButtonSelector).isVisible();
+         await expect(this.page.locator(this.checkoutButtonSelector)).toBeVisible();
     }
 
     @step('Get the number of items in the cart')

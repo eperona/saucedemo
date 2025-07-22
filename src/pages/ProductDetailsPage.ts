@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { step } from '../tests/base';
+import { expect, step } from '../tests/base';
 
 export default class ProductDetailsPage {
     private readonly productNameSelector = ".inventory_details_name";
@@ -51,19 +51,19 @@ export default class ProductDetailsPage {
     }
 
     @step('Check if Add to Cart button is visible')
-    async isAddToCartButtonVisible(): Promise<boolean> {
-        return await this.page.locator(this.addToCartButtonSelector).isVisible();
+    async isAddToCartButtonVisible(): Promise<void> {
+        await expect(this.page.locator(this.addToCartButtonSelector)).toBeVisible();
     }
 
     @step('Check if Remove button is visible')
-    async isRemoveButtonVisible(): Promise<boolean> {
-        return await this.page.locator(this.removeButtonSelector).isVisible();
+    async isRemoveButtonVisible(): Promise<void> {
+        await expect(this.page.locator(this.removeButtonSelector)).toBeVisible();
     }
 
     @step('Check if product details page is loaded')
-    async isProductDetailsPageLoaded(): Promise<boolean> {
-        return await this.page.locator(this.productNameSelector).isVisible() &&
-               await this.page.locator(this.productPriceSelector).isVisible() &&
-               await this.page.locator(this.productDescriptionSelector).isVisible();
-    }
+    async isProductDetailsPageLoaded(): Promise<void>{
+        await expect(this.page.locator(this.productNameSelector)).toBeVisible();
+        await expect(this.page.locator(this.productPriceSelector)).toBeVisible();
+        await expect(this.page.locator(this.productDescriptionSelector)).toBeVisible();
+    }   
 }

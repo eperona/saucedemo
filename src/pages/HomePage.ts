@@ -39,8 +39,8 @@ export default class HomePage {
 
     @step('Check if Home Page is loaded')
     async isHomePageLoaded() {
-        return await this.page.locator(this.headerProductSelector).isVisible() &&
-               await this.page.locator(this.productSortSelector).isVisible();
+        await expect(this.page.locator(this.headerProductSelector)).toBeVisible();
+        await expect(this.page.locator(this.productSortSelector)).toBeVisible();
     }
 
     @step('Check if add to Add to Cart button is visible')

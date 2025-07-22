@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { step } from '../tests/base';
+import { expect, step } from '../tests/base';
 
 export default class CheckoutCompletePage {
 
@@ -11,8 +11,7 @@ export default class CheckoutCompletePage {
 
     @step('Checkout Complete Page is opened')
     async isOpened() {
-        return this.page.url().includes('/checkout-complete')&&
-        await this.page.locator(this.backHomeButtonSelector).isVisible() 
+        await expect(this.page.locator(this.backHomeButtonSelector)).toBeVisible();
     }
 
     @step('Click on Back Home button')

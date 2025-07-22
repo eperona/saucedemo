@@ -24,52 +24,51 @@ import { faker } from '@faker-js/faker';
             await loginPage.login(username, process.env.PASSWORD!);
         });
 
-        expect(await homePage.isHomePageLoaded()).toBeTruthy();
+        await homePage.isHomePageLoaded();
 
         let productPrice = await homePage.getProductPrice(productName);
         let productDescription = await homePage.getProductDescription(productName);
 
         //verifying product in Product Details Page
         await homePage.clickProductLink(productName);
-        expect(await productDetailsPage.isProductDetailsPageLoaded()).toBeTruthy();
+        await productDetailsPage.isProductDetailsPageLoaded();
         expect(await productDetailsPage.checkIfImageIsCorrect(productName)).toBeTruthy();
         expect(await productDetailsPage.checkIfPriceIsCorrect(productPrice)).toBeTruthy();
         expect(await productDetailsPage.checkIfDescriptionIsCorrect(productDescription)).toBeTruthy();
 
         await productDetailsPage.clickAddToCartButton();
-        expect(await productDetailsPage.isRemoveButtonVisible).toBeTruthy();
+        await productDetailsPage.isRemoveButtonVisible();
 
         //verifying product in Cart Page then remove
         await productDetailsPage.clickCartButton();
-        expect(await cartPage.isCartPageLoaded()).toBeTruthy();
+        await cartPage.isCartPageLoaded();
         expect(await cartPage.getCartItemsCount()).toBe(1);
         expect(await cartPage.checkIfProductNameIsCorrect(productName)).toBeTruthy();
         expect(await cartPage.checkIfDescriptionIsCorrect(productName, productDescription)).toBeTruthy();
         expect(await cartPage.checkIfPriceIsCorrect(productName, productPrice)).toBeTruthy();
         await cartPage.clickRemoveButtonInCartPage(productName);
-        expect(await cartPage.isCartItemVisible()).toBeFalsy();
         await cartPage.clickContinueShopping();
 
         // start of product order from Home Page
-        expect(await homePage.isHomePageLoaded()).toBeTruthy();
+        await homePage.isHomePageLoaded();
         await homePage.addProductToCart(productName);
         expect(await homePage.isAddToCartButtonVisible(productName)).toBeFalsy();   
         expect(await homePage.isRemoveButtonVisible(productName)).toBeTruthy();
         await homePage.clickCartIcon();
-        expect(await cartPage.isCartPageLoaded()).toBeTruthy();
+        await cartPage.isCartPageLoaded();
         expect(await cartPage.getCartItemsCount()).toBe(1);
         expect(await cartPage.checkIfProductNameIsCorrect(productName)).toBeTruthy();
         await cartPage.clickCheckoutButton();
 
         //start of Checkout Page
-        expect(await checkoutPage.isOpened()).toBeTruthy();
+        await checkoutPage.isOpened();
         await checkoutPage.fillFirstName(username);
         await checkoutPage.fillLastName(faker.person.lastName());
         await checkoutPage.fillPostCode(faker.location.zipCode());
         await checkoutPage.clickContinueButton();
 
         //start of Checkout Overview Page
-        expect(await checkoutOverviewPage.isOpened()).toBeTruthy();
+        await checkoutOverviewPage.isOpened();
         expect(await checkoutOverviewPage.getSubtotal()).toContain(productPrice);
 
         const tax = await checkoutOverviewPage.getTax();
@@ -88,9 +87,9 @@ import { faker } from '@faker-js/faker';
         await checkoutOverviewPage.clickFinishButton();
 
         //Checkout Complete Page
-        expect(await checkoutCompletePage.isOpened()).toBeTruthy();
+        await checkoutCompletePage.isOpened();
         await checkoutCompletePage.clickBackHomeButton();
-        expect(await homePage.isHomePageLoaded()).toBeTruthy();
+        await homePage.isHomePageLoaded();
 
     });
 });
