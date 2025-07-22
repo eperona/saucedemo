@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "$env:NODE_ENV='qa'; npx playwright test"
+    "test": "$env:NODE_ENV='qa'; npx playwright test --config=playwright.config.ts"
   },
   "keywords": [],
   "author": "Edwin Perona",
