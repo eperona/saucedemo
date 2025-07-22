@@ -6,7 +6,7 @@ export default class ProductDetailsPage {
     private readonly productPriceSelector = ".inventory_details_price";
     private readonly productDescriptionSelector = ".inventory_details_desc";
     private readonly addToCartButtonSelector = ".btn_inventory";
-    private readonly removeButtonSelector = ".btn_secondary";
+    private readonly removeButtonSelector = "#remove";
     private readonly backToProductsButtonSelector = "#back-to-products";
     private readonly cartIconSelector = ".shopping_cart_link";
 
