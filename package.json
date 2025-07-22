@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "$env:NODE_ENV='qa'; npx playwright test"
+  },
   "keywords": [],
   "author": "Edwin Perona",
   "license": "ISC",
