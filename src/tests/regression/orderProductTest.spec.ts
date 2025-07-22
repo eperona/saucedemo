@@ -1,6 +1,6 @@
 import {expect, test } from '../base';
 
-test.describe('Order Product Test', () => {
+test.describe('Order Product Tests', () => {
     const product1Name = 'Sauce Labs Backpack';
     const product2Name = 'Sauce Labs Bike Light';
 
@@ -55,4 +55,18 @@ test.describe('Order Product Test', () => {
         await productPage.clickCartIcon();
         await cartPage.isCartItemVisible();
     });
+
+    test('Product sorting functionality', async ({ productPage }) => {      
+        await productPage.isHomePageLoaded();
+        await productPage.selectProductNameAtoZ();
+        expect(await productPage.areProductNamesAlphabetical()).toBe(true);
+        await productPage.selectProductNameZtoA();
+        expect(await productPage.areProductNamesReverseAlphabetical()).toBe(true);
+        await productPage.selectProductPriceLowToHigh();
+        expect(await productPage.areProductPricesLowToHigh()).toBe(true);
+        await productPage.selectProductPriceHighToLow();
+        expect(await productPage.areProductPricesHighToLow()).toBe(true);
+    });
 }); 
+
+

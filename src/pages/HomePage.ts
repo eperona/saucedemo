@@ -5,7 +5,11 @@ export default class HomePage {
     private readonly headerProductSelector = ".title:has-text('Products')";
     private readonly inventoryPageUrl = process.env.URL! + 'inventory.html';
     private readonly cartIconSelector = ".shopping_cart_link";
-    private readonly productSortSelector = ".product_sort_container";
+    private readonly selectProductSorterSelector = ".product_sort_container";   
+    private readonly selectAtoZProductsOptionSelector = "option[value='az']";
+    private readonly selectZtoAProductsOptionSelector = "option[value='za']";
+    private readonly selectLowToHighProductsOptionSelector = "option[value='lohi']";
+    private readonly selectHighToLowProductsOptionSelector = "option[value='hilo']";
 
     constructor(private page: Page) {}
 
@@ -40,7 +44,7 @@ export default class HomePage {
     @step('Check if Home Page is loaded')
     async isHomePageLoaded() {
         await expect(this.page.locator(this.headerProductSelector)).toBeVisible();
-        await expect(this.page.locator(this.productSortSelector)).toBeVisible();
+        await expect(this.page.locator(this.selectProductSorterSelector)).toBeVisible();
     }
 
     @step('Check if add to Add to Cart button is visible')
@@ -82,5 +86,75 @@ export default class HomePage {
     async checkIfProductIsInProductPage(productName: string): Promise<boolean> {
         const productSelector = `.inventory_item:has-text("${productName}")`;
         return await this.page.locator(productSelector).isVisible();
+    }
+
+    @step('Select product Name A to Z')
+    async selectProductNameAtoZ() {
+        await this.page.locator(this.selectProductSorterSelector).click();
+        await this.page.locator(this.selectAtoZProductsOptionSelector).waitFor({ state: 'attached' });
+        await this.page.selectOption(this.selectProductSorterSelector, { value: 'az' });
+    }
+
+    @step('Select product Name Z to A')
+    async selectProductNameZtoA() {
+        await this.page.locator(this.selectProductSorterSelector).click();
+        await this.page.locator(this.selectZtoAProductsOptionSelector).waitFor({ state: 'attached' });
+        await this.page.selectOption(this.selectProductSorterSelector, { value: 'za' });
+    }
+
+    @step('Select product Price Low to High')
+    async selectProductPriceLowToHigh() {
+        await this.page.locator(this.selectProductSorterSelector).click();
+        await this.page.locator(this.selectLowToHighProductsOptionSelector).waitFor({ state: 'attached' });
+        await this.page.selectOption(this.selectProductSorterSelector, { value: 'lohi' });
+    }
+
+    @step('Select product Price High to Low')
+    async selectProductPriceHighToLow() {
+        await this.page.locator(this.selectProductSorterSelector).click();
+        await this.page.locator(this.selectHighToLowProductsOptionSelector).waitFor({ state: 'attached' });
+        await this.page.selectOption(this.selectProductSorterSelector, { value: 'hilo' });
+    }
+
+    @step('Get all product names in page')
+    async getAllProductNames(): Promise<string[]> {
+        const productNameLocator = '.inventory_item_name';
+        const names = await this.page.locator(productNameLocator).allTextContents();
+        return names.map(name => name.trim());
+    }
+
+    @step('Check if product names are in alphabetical order')
+    async areProductNamesAlphabetical(): Promise<boolean> {
+        const names = await this.getAllProductNames();
+        const sorted = names.slice().sort((a, b) => a.localeCompare(b));
+        return names.every((name, idx) => name === sorted[idx]);
+    }
+
+    @step('Check if product names are in reverse alphabetical order')
+    async areProductNamesReverseAlphabetical(): Promise<boolean> {
+        const names = await this.getAllProductNames();
+        const reverseSorted = [...names].sort((a, b) => b.localeCompare(a));
+        return names.every((name, idx) => name === reverseSorted[idx]);
+    }
+
+    @step('Get all product prices in page')
+    async getAllProductPrices(): Promise<string[]> {
+        const priceLocator = '.inventory_item_price';
+        const prices = await this.page.locator(priceLocator).allTextContents();
+        return prices.map(price => price.trim());
+    }
+
+    @step('Check if product prices are in ascending order')
+    async areProductPricesLowToHigh(): Promise<boolean> {
+        const prices = await this.getAllProductPrices();
+        const sorted = prices.slice().sort((a, b) => parseFloat(a.replace('$', '')) - parseFloat(b.replace('$', '')));
+        return prices.every((price, idx) => price === sorted[idx]);
+    }
+
+    @step('Check if product prices are in descending order')
+    async areProductPricesHighToLow(): Promise<boolean> {
+        const prices = await this.getAllProductPrices();
+        const reverseSorted = [...prices].sort((a, b) => parseFloat(b.replace('$', '')) - parseFloat(a.replace('$', '')));
+        return prices.every((price, idx) => price === reverseSorted[idx]);
     }
 }

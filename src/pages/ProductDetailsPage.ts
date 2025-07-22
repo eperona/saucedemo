@@ -10,6 +10,7 @@ export default class ProductDetailsPage {
     private readonly backToProductsButtonSelector = "#back-to-products";
     private readonly cartIconSelector = ".shopping_cart_link";
 
+
     constructor(private page: Page) {}
 
     @step('Click Add to Cart button')
