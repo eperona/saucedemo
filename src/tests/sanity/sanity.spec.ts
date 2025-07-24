@@ -7,6 +7,6 @@ sanity('Sanity Test', async ({ productPage, cartPage }) => {
     await productPage.addProductToCart('Sauce Labs Bike Light');
     await productPage.clickCartIcon();
     await cartPage.isCartPageLoaded();
-    expect(await cartPage.getCartItemsCount()).toBe(2);
+    expect(await cartPage.getCartItemsCount(), "Cart items count should be 2").toBe(2);
 
 });

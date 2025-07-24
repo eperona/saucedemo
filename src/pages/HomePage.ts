@@ -123,18 +123,13 @@ export default class HomePage {
         return names.map(name => name.trim());
     }
 
-    @step('Check if product names are in alphabetical order')
-    async areProductNamesAlphabetical(): Promise<boolean> {
+    @step('Check if product names are in specified alphabetical order')
+    async areProductNamesOrdered(order: 'asc' | 'desc' = 'asc'): Promise<boolean> {
         const names = await this.getAllProductNames();
-        const sorted = names.slice().sort((a, b) => a.localeCompare(b));
+        const sorted = names.slice().sort((a, b) =>
+            order === 'asc' ? a.localeCompare(b) : b.localeCompare(a)
+        );
         return names.every((name, idx) => name === sorted[idx]);
-    }
-
-    @step('Check if product names are in reverse alphabetical order')
-    async areProductNamesReverseAlphabetical(): Promise<boolean> {
-        const names = await this.getAllProductNames();
-        const reverseSorted = [...names].sort((a, b) => b.localeCompare(a));
-        return names.every((name, idx) => name === reverseSorted[idx]);
     }
 
     @step('Get all product prices in page')
@@ -143,18 +138,14 @@ export default class HomePage {
         const prices = await this.page.locator(priceLocator).allTextContents();
         return prices.map(price => price.trim());
     }
-
-    @step('Check if product prices are in ascending order')
-    async areProductPricesLowToHigh(): Promise<boolean> {
+    
+    @step('Check if product prices are in specified order')
+    async areProductPricesOrdered(order: 'asc' | 'desc' = 'asc'): Promise<boolean> {
         const prices = await this.getAllProductPrices();
-        const sorted = prices.slice().sort((a, b) => parseFloat(a.replace('$', '')) - parseFloat(b.replace('$', '')));
-        return prices.every((price, idx) => price === sorted[idx]);
-    }
-
-    @step('Check if product prices are in descending order')
-    async areProductPricesHighToLow(): Promise<boolean> {
-        const prices = await this.getAllProductPrices();
-        const reverseSorted = [...prices].sort((a, b) => parseFloat(b.replace('$', '')) - parseFloat(a.replace('$', '')));
-        return prices.every((price, idx) => price === reverseSorted[idx]);
+        const numericPrices = prices.map(price => parseFloat(price.replace('$', '')));
+        const sorted = numericPrices.slice().sort((a, b) =>
+            order === 'asc' ? a - b : b - a
+        );
+        return numericPrices.every((price, idx) => price === sorted[idx]);
     }
 }

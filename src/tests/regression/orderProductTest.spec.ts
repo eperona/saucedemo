@@ -11,9 +11,9 @@ test.describe('Order Product Tests', () => {
         await productPage.addProductToCart(product2Name);
         await productPage.isHomePageLoaded();
         await productPage.clickCartIcon();
-        expect(await cartPage.getCartItemsCount()).toBe(2);
+        expect(await cartPage.getCartItemsCount(), "Cart items count should be 2").toBe(2);
         await cartPage.clickRemoveButtonInCartPage(product1Name);
-        expect(await cartPage.getCartItemsCount()).toBe(1);
+        expect(await cartPage.getCartItemsCount(), "Cart items count should be 1").toBe(1);
     });
 
     test('Continue shopping from cart', async ({ productPage, cartPage }) => {
@@ -42,7 +42,7 @@ test.describe('Order Product Tests', () => {
         await productPage.clickCartIcon();
         await cartPage.isCartItemVisible();
         await cartPage.clickRemoveButtonInCartPage(product1Name);
-        expect(await cartPage.getCartItemsCount()).toBe(0);
+        expect(await cartPage.getCartItemsCount(), "Cart items count should be 0").toBe(0);
     });
 
     test('Cart icon visibility', async ({ productPage }) => {
@@ -59,13 +59,13 @@ test.describe('Order Product Tests', () => {
     test('Product sorting functionality', async ({ productPage }) => {      
         await productPage.isHomePageLoaded();
         await productPage.selectProductNameAtoZ();
-        expect(await productPage.areProductNamesAlphabetical()).toBe(true);
+        expect(await productPage.areProductNamesOrdered('asc'), "Product names should be in ascending order").toBe(true);
         await productPage.selectProductNameZtoA();
-        expect(await productPage.areProductNamesReverseAlphabetical()).toBe(true);
+        expect(await productPage.areProductNamesOrdered('desc'), "Product names should be in descending order").toBe(true);
         await productPage.selectProductPriceLowToHigh();
-        expect(await productPage.areProductPricesLowToHigh()).toBe(true);
+        expect(await productPage.areProductPricesOrdered('asc'), "Product prices should be in ascending order").toBe(true);
         await productPage.selectProductPriceHighToLow();
-        expect(await productPage.areProductPricesHighToLow()).toBe(true);
+        expect(await productPage.areProductPricesOrdered('desc'), "Product prices should be in descending order").toBe(true);
     });
 }); 
 

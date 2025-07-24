@@ -8,7 +8,7 @@ if (!process.env.NODE_ENV) {
   });
 }
 export default defineConfig({
-  // retries: 1,
+  retries: 1,
   reporter: [
     ['allure-playwright'],
     ['html']

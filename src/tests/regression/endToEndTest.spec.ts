@@ -32,9 +32,9 @@ import { faker } from '@faker-js/faker';
         //verifying product in Product Details Page
         await homePage.clickProductLink(productName);
         await productDetailsPage.isProductDetailsPageLoaded();
-        expect(await productDetailsPage.checkIfImageIsCorrect(productName)).toBeTruthy();
-        expect(await productDetailsPage.checkIfPriceIsCorrect(productPrice)).toBeTruthy();
-        expect(await productDetailsPage.checkIfDescriptionIsCorrect(productDescription)).toBeTruthy();
+        expect(await productDetailsPage.checkIfImageIsCorrect(productName), "Product image should be correct").toBeTruthy();
+        expect(await productDetailsPage.checkIfPriceIsCorrect(productPrice), "Product price should be correct").toBeTruthy();
+        expect(await productDetailsPage.checkIfDescriptionIsCorrect(productDescription), "Product description should be correct").toBeTruthy();
 
         await productDetailsPage.clickAddToCartButton();
         await productDetailsPage.isRemoveButtonVisible();
@@ -42,22 +42,22 @@ import { faker } from '@faker-js/faker';
         //verifying product in Cart Page then remove
         await productDetailsPage.clickCartButton();
         await cartPage.isCartPageLoaded();
-        expect(await cartPage.getCartItemsCount()).toBe(1);
-        expect(await cartPage.checkIfProductNameIsCorrect(productName)).toBeTruthy();
-        expect(await cartPage.checkIfDescriptionIsCorrect(productName, productDescription)).toBeTruthy();
-        expect(await cartPage.checkIfPriceIsCorrect(productName, productPrice)).toBeTruthy();
+        expect(await cartPage.getCartItemsCount(), "Cart items count should be 1").toBe(1);
+        expect(await cartPage.checkIfProductNameIsCorrect(productName), "Product name should be correct").toBeTruthy();
+        expect(await cartPage.checkIfDescriptionIsCorrect(productName, productDescription), "Product description should be correct").toBeTruthy();
+        expect(await cartPage.checkIfPriceIsCorrect(productName, productPrice), "Product price should be correct").toBeTruthy();
         await cartPage.clickRemoveButtonInCartPage(productName);
         await cartPage.clickContinueShopping();
 
         // start of product order from Home Page
         await homePage.isHomePageLoaded();
         await homePage.addProductToCart(productName);
-        expect(await homePage.isAddToCartButtonVisible(productName)).toBeFalsy();   
-        expect(await homePage.isRemoveButtonVisible(productName)).toBeTruthy();
+        expect(await homePage.isAddToCartButtonVisible(productName), "Add to Cart button should be hidden").toBeFalsy();
+        expect(await homePage.isRemoveButtonVisible(productName), "Remove button should be visible").toBeTruthy();
         await homePage.clickCartIcon();
         await cartPage.isCartPageLoaded();
-        expect(await cartPage.getCartItemsCount()).toBe(1);
-        expect(await cartPage.checkIfProductNameIsCorrect(productName)).toBeTruthy();
+        expect(await cartPage.getCartItemsCount(), "Cart items count should be 1").toBe(1);
+        expect(await cartPage.checkIfProductNameIsCorrect(productName), "Product name should be correct").toBeTruthy();
         await cartPage.clickCheckoutButton();
 
         //start of Checkout Page
@@ -69,7 +69,7 @@ import { faker } from '@faker-js/faker';
 
         //start of Checkout Overview Page
         await checkoutOverviewPage.isOpened();
-        expect(await checkoutOverviewPage.getSubtotal()).toContain(productPrice);
+        expect(await checkoutOverviewPage.getSubtotal(), "Subtotal should contain product price").toContain(productPrice);
 
         const tax = await checkoutOverviewPage.getTax();
         const subtotal = await checkoutOverviewPage.getSubtotal()
