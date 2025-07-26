@@ -24,7 +24,7 @@ export const test = base.extend<TestOptions>({
         const loginPage = new LoginPage(page);
         const homePage = new HomePage(page);
         await loginPage.goto();
-        const username = process.env.USER;
+        const username = process.env.USERID;
         const password = process.env.PASSWORD;
         if (!username || !password) {
             throw new Error("Environment variables USER and PASSWORD must be set.");
